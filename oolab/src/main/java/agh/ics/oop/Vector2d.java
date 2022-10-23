@@ -1,16 +1,22 @@
 package agh.ics.oop;
 
 public class Vector2d {
-    public int x;
-    public int y;
+    public static void main(){
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
+    }
+    public final int x, y;
 
-    public Vector2d(final int x, final int y) {
+    public Vector2d(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public String toString(int x, int y){
-        return "(" + x + "," + y + ")";
+    public String toString(){
+        return "(" + this.x + "," + this.y + ")";
     }
 
     public boolean precedes(Vector2d other){
@@ -49,4 +55,12 @@ public class Vector2d {
         return new Vector2d(-this.x, -this.y);
     }
 
+    public boolean equals(Object other){
+        if (this == other)
+            return true;
+        if (!(other instanceof Vector2d))
+            return false;
+        Vector2d that = (Vector2d) other;
+        return this.x == that.x && this.y == that.y;
+    }
 }
