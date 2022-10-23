@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.ics.oop.MapDirectionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-10-23T13:50:16" hostname="TRANSITION" time="0.046">
+  <properties/>
+  <testcase name="previous()" classname="agh.ics.oop.MapDirectionTest" time="0.044"/>
+  <testcase name="next()" classname="agh.ics.oop.MapDirectionTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
