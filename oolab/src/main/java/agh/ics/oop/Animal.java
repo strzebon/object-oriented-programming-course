@@ -1,8 +1,15 @@
 package agh.ics.oop;
 
 public class Animal {
-    private MapDirection direction = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2,2);
+    private MapDirection direction;
+    private Vector2d position;
+    private IWorldMap map;
+
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.direction = MapDirection.NORTH;
+        this.position = initialPosition;
+        this.map = map;
+    }
 
     public String toString(){
         return this.position.toString() + ", " + this.direction.toString();
