@@ -8,7 +8,7 @@ class AnimalTest {
 
     @Test
     void test() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(new RectangularMap(5,5), new Vector2d(2,2));
         assertTrue(animal.isAt(new Vector2d(2,2)));
         assertEquals(animal.getDirection(), MapDirection.NORTH);
 

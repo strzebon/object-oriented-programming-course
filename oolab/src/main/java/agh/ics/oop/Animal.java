@@ -1,5 +1,4 @@
 package agh.ics.oop;
-
 public class Animal {
     private MapDirection direction;
     private Vector2d position;
@@ -11,8 +10,17 @@ public class Animal {
         this.map = map;
     }
 
+    public Animal(IWorldMap map){
+        this(map, new Vector2d(2,2));
+    }
+
     public String toString(){
-        return this.position.toString() + ", " + this.direction.toString();
+        return switch (this.direction){
+            case NORTH -> "N";
+            case EAST -> "E";
+            case SOUTH -> "S";
+            case WEST -> "W";
+        };
     }
 
     public boolean isAt(Vector2d position){
@@ -28,17 +36,21 @@ public class Animal {
     }
 
     public void move(MoveDirection direction){
-        Vector2d oldPosition = this.position;
         switch (direction) {
             case RIGHT -> this.direction = this.direction.next();
             case LEFT -> this.direction = this.direction.previous();
-            case FORWARD -> this.position = this.position.add(this.direction.toUnitVector());
-            case BACKWARD ->  this.position = this.position.subtract(this.direction.toUnitVector());
-        }
-
-        if (!(this.position.follows(new Vector2d(0,0)) && this.position.precedes(new Vector2d(4,4)))){
-            this.position = oldPosition;
+            case FORWARD -> {
+                if(map.canMoveTo(this.position.add(this.direction.toUnitVector()))){
+                    this.position = this.position.add(this.direction.toUnitVector());
+                }
+            }
+            case BACKWARD -> {
+                if(map.canMoveTo(this.position.subtract(this.direction.toUnitVector()))){
+                    this.position = this.position.subtract(this.direction.toUnitVector());
+                }
+            }
         }
     }
 }
+
 
