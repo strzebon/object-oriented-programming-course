@@ -1,5 +1,5 @@
 package agh.ics.oop;
-public class Animal {
+public class Animal implements IMapElement {
     private MapDirection direction;
     private Vector2d position;
     private IWorldMap map;
