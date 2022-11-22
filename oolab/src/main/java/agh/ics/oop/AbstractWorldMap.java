@@ -10,10 +10,9 @@ public abstract class AbstractWorldMap implements IWorldMap {
     protected MapVisualizer visualizer;
     protected List<Animal> animals = new ArrayList<>();
 
-    abstract boolean checkIfIsOccupied(Vector2d position);
-    abstract Object checkObjectAt(Vector2d position);
     abstract Vector2d checkLowerLeft();
     abstract Vector2d checkUpperRight();
+
     @Override
     public boolean canMoveTo(Vector2d position) {
         return position.follows(this.lowerLeft) && position.precedes(this.upperRight) && !(objectAt(position) instanceof Animal);
@@ -33,7 +32,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
         for(Animal animal: this.animals){
             if(animal.isAt(position)) return true;
         }
-        return checkIfIsOccupied(position);
+        return false;
     }
 
     @Override
@@ -41,7 +40,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
         for(Animal animal: this.animals){
             if(animal.isAt(position)) return animal;
         }
-        return checkObjectAt(position);
+        return null;
     }
 
     public String toString(){

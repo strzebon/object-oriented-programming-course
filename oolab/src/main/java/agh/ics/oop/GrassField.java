@@ -38,19 +38,19 @@ public class GrassField extends AbstractWorldMap{
     }
 
     @Override
-    public boolean checkIfIsOccupied(Vector2d position) {
+    public boolean isOccupied(Vector2d position) {
         for(Grass grass: this.grasses) {
             if (grass.getPosition().equals(position)) return true;
         }
-        return false;
+        return super.isOccupied(position);
     }
 
     @Override
-    public Object checkObjectAt(Vector2d position) {
+    public Object objectAt(Vector2d position) {
         for(Grass grass: this.grasses) {
             if (grass.getPosition().equals(position)) return grass;
         }
-        return null;
+        return super.objectAt(position);
     }
 
     @Override

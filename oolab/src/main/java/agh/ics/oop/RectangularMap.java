@@ -17,16 +17,6 @@ public class RectangularMap extends AbstractWorldMap{
     }
 
     @Override
-    public boolean checkIfIsOccupied(Vector2d position) {
-        return false;
-    }
-
-    @Override
-    public Object checkObjectAt(Vector2d position) {
-        return null;
-    }
-
-    @Override
     Vector2d checkLowerLeft() {
         return this.lowerLeft;
     }
