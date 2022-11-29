@@ -8,12 +8,18 @@ public class World {
 //        IEngine engine = new SimulationEngine(directions, map, positions);
 //        System.out.println(map);
 //        engine.run();
+        try {
+            // kod który może rzucić wyjątek
+            MoveDirection[] directions = new OptionsParser().parse(args);
+            IWorldMap map = new GrassField(10);
+            Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+            IEngine engine = new SimulationEngine(directions, map, positions);
+            System.out.println(map);
+            engine.run();
+        } catch(IllegalArgumentException ex) {
+            // kod obsługi wyjątku
+            System.out.println(ex);
 
-        MoveDirection[] directions = new OptionsParser().parse(args);
-        IWorldMap map = new GrassField(10);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
-        System.out.println(map);
-        engine.run();
+        }
     }
 }

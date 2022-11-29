@@ -7,6 +7,7 @@ public class OptionsParser {
             if( arg.equals("f") || arg.equals("forward") || arg.equals("b") || arg.equals("backward") || arg.equals("r") || arg.equals("right") || arg.equals("l") || arg.equals("left")){
                 size++;
             }
+            else throw new IllegalArgumentException(arg + " is not legal move specification");
         }
         MoveDirection[] directions = new MoveDirection[size];
         int i = 0;
