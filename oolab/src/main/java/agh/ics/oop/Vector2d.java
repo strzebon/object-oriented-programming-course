@@ -68,6 +68,6 @@ public class Vector2d {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(this.x, this.y);
     }
 }
