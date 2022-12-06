@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
@@ -11,9 +9,10 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     protected Vector2d upperRight;
     protected MapVisualizer visualizer;
     protected Map<Vector2d, Animal> animals = new HashMap<>();
+    protected MapBoundary animalBoundary = new MapBoundary();
 
-    abstract Vector2d checkLowerLeft();
-    abstract Vector2d checkUpperRight();
+    public abstract Vector2d checkLowerLeft();
+    public abstract Vector2d checkUpperRight();
 
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -22,12 +21,18 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     @Override
     public boolean place(Animal animal) {
-        if(this.animals.get(animal.getPosition()) == null){
-            this.animals.put(animal.getPosition(), animal);
+        Vector2d position = animal.getPosition();
+        if(this.animals.get(position) == null && position.follows(this.lowerLeft) && position.precedes(this.upperRight)){
+            this.animals.put(position, animal);
+            animalBoundary.add(position);
             animal.addObserver(this);
+            animal.addObserver(animalBoundary);
             return true;
         }
-        throw new IllegalArgumentException(animal.getPosition() + " is occupied");
+        else if(this.animals.get(position) != null){
+            throw new IllegalArgumentException(position + " is occupied");
+        }
+        else throw new IllegalArgumentException(position + " is outside the map");
     }
 
     @Override

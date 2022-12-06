@@ -10,9 +10,11 @@ class RectangularMapTest {
         IWorldMap map = new RectangularMap(2,2);
         Animal animal1 = new Animal(map, new Vector2d(0,0));
         Animal animal2 = new Animal(map, new Vector2d(1,1));
+        Animal animal3 = new Animal(map, new Vector2d(1,2));
         assertTrue(map.place(animal1));
         assertTrue(map.place(animal2));
-        assertFalse(map.place(animal1));
+        assertThrows(IllegalArgumentException.class, () -> map.place(animal1));
+        assertThrows(IllegalArgumentException.class, () -> map.place(animal3));
         assertEquals(map.objectAt(new Vector2d(0,0)), animal1);
         assertEquals(map.objectAt(new Vector2d(1,1)), animal2);
         assertTrue(map.isOccupied(new Vector2d(1,1)));

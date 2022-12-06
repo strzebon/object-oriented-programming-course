@@ -18,12 +18,12 @@ public class RectangularMap extends AbstractWorldMap{
     }
 
     @Override
-    Vector2d checkLowerLeft() {
+    public Vector2d checkLowerLeft() {
         return this.lowerLeft;
     }
 
     @Override
-    Vector2d checkUpperRight() {
+    public Vector2d checkUpperRight() {
         return this.upperRight;
     }
 }

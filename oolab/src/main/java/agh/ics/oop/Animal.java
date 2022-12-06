@@ -6,7 +6,7 @@ public class Animal implements IMapElement {
     private final ArrayList<IPositionChangeObserver> observers;
     private MapDirection direction;
     private Vector2d position;
-    private IWorldMap map;
+    private final IWorldMap map;
 
     public Animal(IWorldMap map, Vector2d initialPosition){
         this.direction = MapDirection.NORTH;

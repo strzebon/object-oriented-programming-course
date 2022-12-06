@@ -27,7 +27,7 @@ class GrassFieldTest {
         Animal animal2 = new Animal(map, new Vector2d(5,6));
         assertTrue(map.place(animal1));
         assertTrue(map.place(animal2));
-        assertFalse(map.place(animal1));
+        assertThrows(IllegalArgumentException.class, () -> map.place(animal1));
         assertEquals(map.objectAt(new Vector2d(5,5)), animal1);
         assertEquals(map.objectAt(new Vector2d(5,6)), animal2);
         assertTrue(map.isOccupied(new Vector2d(5,5)));

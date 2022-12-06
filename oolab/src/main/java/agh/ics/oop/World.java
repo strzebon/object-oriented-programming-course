@@ -1,5 +1,8 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+import javafx.application.Application;
+
 public class World {
     public static void main(String[] args){
 //        MoveDirection[] directions = new OptionsParser().parse(args);
@@ -8,18 +11,6 @@ public class World {
 //        IEngine engine = new SimulationEngine(directions, map, positions);
 //        System.out.println(map);
 //        engine.run();
-        try {
-            // kod który może rzucić wyjątek
-            MoveDirection[] directions = new OptionsParser().parse(args);
-            IWorldMap map = new GrassField(10);
-            Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-            IEngine engine = new SimulationEngine(directions, map, positions);
-            System.out.println(map);
-            engine.run();
-        } catch(IllegalArgumentException ex) {
-            // kod obsługi wyjątku
-            System.out.println(ex);
-
-        }
+        Application.launch(App.class, args);
     }
 }

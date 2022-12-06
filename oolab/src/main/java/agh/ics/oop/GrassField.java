@@ -3,12 +3,11 @@ package agh.ics.oop;
 import java.util.*;
 
 public class GrassField extends AbstractWorldMap{
-    private final int quantity;
     private final Map<Vector2d, Grass> grasses;
+    private final MapBoundary grassBoundary = new MapBoundary();
 
 
     public GrassField(int quantity){
-        this.quantity = quantity;
         this.grasses = new HashMap<>();
         this.lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
         this.upperRight = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -23,6 +22,7 @@ public class GrassField extends AbstractWorldMap{
             Vector2d position = new Vector2d(x, y);
             if(!isOccupied(position)){
                 this.grasses.put(position, new Grass(position));
+                grassBoundary.add(position);
                 counter++;
             }
         }
@@ -41,26 +41,16 @@ public class GrassField extends AbstractWorldMap{
     }
 
     @Override
-    Vector2d checkLowerLeft() {
-        Vector2d realLowerLeft = this.upperRight;
-        for(Vector2d position: this.animals.keySet()){
-            realLowerLeft = realLowerLeft.lowerLeft(position);
-        }
-        for(Vector2d position: this.grasses.keySet()){
-            realLowerLeft = realLowerLeft.lowerLeft(position);
-        }
-        return realLowerLeft;
+    public Vector2d checkLowerLeft() {
+        Vector2d animalLowerLeft = animalBoundary.getLowerLeft();
+        Vector2d grassLowerLeft = grassBoundary.getLowerLeft();
+        return new Vector2d(Math.min(animalLowerLeft.x, grassLowerLeft.x), Math.min(animalLowerLeft.y, grassLowerLeft.y));
     }
 
     @Override
-    Vector2d checkUpperRight() {
-        Vector2d realUpperRight = this.lowerLeft;
-        for(Vector2d position: this.animals.keySet()){
-            realUpperRight = realUpperRight.upperRight(position);
-        }
-        for(Vector2d position: this.grasses.keySet()){
-            realUpperRight = realUpperRight.upperRight(position);
-        }
-        return realUpperRight;
+    public Vector2d checkUpperRight() {
+        Vector2d animalUpperRight = animalBoundary.getUpperRight();
+        Vector2d grassUpperRight = grassBoundary.getUpperRight();
+        return new Vector2d(Math.max(animalUpperRight.x, grassUpperRight.x), Math.max(animalUpperRight.y, grassUpperRight.y));
     }
 }
