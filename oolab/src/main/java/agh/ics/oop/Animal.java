@@ -36,6 +36,21 @@ public class Animal implements IMapElement {
         return this.position;
     }
 
+    @Override
+    public String getImage() {
+        return switch (this.direction){
+            case NORTH -> "src/main/resources/up.png";
+            case EAST -> "src/main/resources/right.png";
+            case SOUTH -> "src/main/resources/down.png";
+            case WEST -> "src/main/resources/left.png";
+        };
+    }
+
+    @Override
+    public String toCaption() {
+        return null;
+    }
+
     public MapDirection getDirection(){
         return this.direction;
     }
