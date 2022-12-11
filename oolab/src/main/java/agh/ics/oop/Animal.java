@@ -48,7 +48,7 @@ public class Animal implements IMapElement {
 
     @Override
     public String toCaption() {
-        return null;
+        return "Z " + position;
     }
 
     public MapDirection getDirection(){

@@ -18,7 +18,7 @@ public class Grass implements IMapElement {
 
     @Override
     public String toCaption() {
-        return null;
+        return "Trawa";
     }
 
     public String toString(){

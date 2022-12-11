@@ -14,7 +14,8 @@ public class SimulationEngine implements IEngine{
         this.animals = new ArrayList<>();
         for(Vector2d position: positions){
             Animal animal = new Animal(map, position);
-            if(map.place(animal)) animals.add(animal);
+            animals.add(animal);
+            map.place(animal);
         }
     }
 

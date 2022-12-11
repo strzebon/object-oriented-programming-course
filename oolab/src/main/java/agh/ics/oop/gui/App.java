@@ -2,6 +2,10 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
@@ -10,36 +14,59 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class App extends Application {
+public class App extends Application implements IRefreshObserver {
 
     private AbstractWorldMap map;
+    private final GridPane gridPane = new GridPane();
+    private Thread threadEngine;
+    private RefreshSimulationEngine engine;
+
 
     @Override
     public void init() throws Exception {
         super.init();
-        Parameters parameters = getParameters();
-        String[] args = parameters.getRaw().toArray(new String[0]);
+//        Parameters parameters = getParameters();
+//        String[] args = parameters.getRaw().toArray(new String[0]);
 
         try {
-            MoveDirection[] directions = new OptionsParser().parse(args);
             this.map = new GrassField(10);
             Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-            IEngine engine = new SimulationEngine(directions, map, positions);
+            engine = new RefreshSimulationEngine(this.map, positions, 300);
+            engine.addObserver(this);
             System.out.println(map);
-            engine.run();
         } catch(IllegalArgumentException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
     @Override
     public void start(Stage primaryStage) {
-        GridPane gridPane = new GridPane();
-        gridPane.setGridLinesVisible(true);
-        gridPane.setHgap(0);
-        gridPane.setVgap(0);
-        int width = 30;
-        int height = 30;
+        VBox vBox = new VBox();
+        TextField textField = new TextField();
+        Button button = new Button("Start");
+
+        button.setOnAction((event) -> {
+            String[] moves = textField.getCharacters().toString().split(" ");
+            MoveDirection[] directions = new OptionsParser().parse(moves);
+            engine.setDirections(directions);
+            threadEngine = new Thread(engine);
+            threadEngine.start();
+        });
+
+        vBox.getChildren().addAll(textField, button);
+        vBox.getChildren().add(gridPane);
+
+        draw();
+
+        Scene scene = new Scene(vBox, 700, 700);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+//        Scene scene = new Scene(gridPane, (maxX - minX + 2) * width, (maxY - minY + 2) * height);
+    }
+
+    private void draw() {
+        int width = 40;
+        int height = 40;
 
         int minY = this.map.checkLowerLeft().y;
         int minX = this.map.checkLowerLeft().x;
@@ -69,16 +96,24 @@ public class App extends Application {
             for (int y = minY; y < maxY+1; y++) {
                 Vector2d position = new Vector2d(x, y);
                 if (this.map.isOccupied(position)) {
-                    Object object = this.map.objectAt(position);
-                    Label label = new Label(object.toString());
-                    GridPane.setHalignment(label, HPos.CENTER);
-                    gridPane.add(label, position.x - minX + 1, maxY - position.y + 1, 1, 1);
+                    IMapElement object = (IMapElement) this.map.objectAt(position);
+                    GuiElementBox element = new GuiElementBox(object);
+                    VBox box = element.getBox();
+                    GridPane.setHalignment(box, HPos.CENTER);
+                    gridPane.add(box, position.x - minX + 1, maxY - position.y + 1, 1, 1);
                 }
             }
         }
-
-        Scene scene = new Scene(gridPane, (maxX - minX + 2) * width, (maxY - minY + 2) * height);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        gridPane.setGridLinesVisible(true);
+    }
+    @Override
+    public void refresh() {
+        Platform.runLater( () -> {
+            this.gridPane.getChildren().clear();
+            this.gridPane.getColumnConstraints().clear();
+            this.gridPane.getRowConstraints().clear();
+            this.gridPane.setGridLinesVisible(false);
+            draw();
+        });
     }
 }

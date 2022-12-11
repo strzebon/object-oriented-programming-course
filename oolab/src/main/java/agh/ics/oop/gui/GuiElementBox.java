@@ -14,27 +14,26 @@ import java.io.FileNotFoundException;
 public class GuiElementBox {
     protected Image image;
     protected IMapElement mapElement;
-    protected VBox box = new VBox(4);
+    protected VBox box = new VBox(0);
     protected Label label;
 
     public GuiElementBox(IMapElement mapElement){
         this.mapElement = mapElement;
 
-        try {
+        try{
             this.image = new Image(new FileInputStream(mapElement.getImage()));
             ImageView imageView = new ImageView(this.image);
             imageView.setFitWidth(20);
             imageView.setFitHeight(20);
-
             this.box.getChildren().add(imageView);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e){
             throw new RuntimeException(e);
         }
 
         this.label = new Label(this.mapElement.toCaption());
         this.box.getChildren().add(this.label);
         this.box.setAlignment(Pos.CENTER);
-
     }
 
     public VBox getBox(){
